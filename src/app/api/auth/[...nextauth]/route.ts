@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google"
+import LinkedinProvider from "next-auth/providers/linkedin"
 
 
 const handler = NextAuth({
@@ -8,12 +9,15 @@ const handler = NextAuth({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
+        LinkedinProvider({
+            clientId: process.env.LINKEDIN_CLIENT_ID as string,
+            clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string
+          })
 
 
     ],
     callbacks: {
         async jwt({ token, user, account, profile }) {
-            // Check if the account is from Google
             if (account?.provider === 'google') {
                 console.log(token);
                 console.log(user);
@@ -21,7 +25,13 @@ const handler = NextAuth({
                 console.log(profile);
             }
 
-            // Always return the token object at the end of the callback
+            if (account?.provider === 'linkedin') {
+                console.log(token);
+                console.log(user);
+                console.log(account);
+                console.log(profile);
+            }
+
             return token;
         },
     },

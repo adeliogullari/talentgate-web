@@ -4,17 +4,20 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 
 interface LoginButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    id: string | undefined
-    variant: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null | undefined    
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
+    id: string
+    variant: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null  
+    onClick: React.MouseEventHandler<HTMLButtonElement>
+    className: string
 }
 
-export function LoginButton({ className, ...props }: Partial<LoginButtonProps>) {
+const LoginButton = ({ ...props }: Partial<LoginButtonProps>) => {
 
     return (
-        <Button id={props.id} variant={props.variant} onClick={props.onClick}>
+        <Button id={props.id} variant={props.variant} onClick={props.onClick} className={props.className}>
             Log In
         </Button>
 
     )
 }
+
+export default LoginButton;

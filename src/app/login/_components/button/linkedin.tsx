@@ -9,13 +9,17 @@ interface LinkedinButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export function LinkedinButton({ className, ...props }: Partial<LinkedinButtonProps>) {
-
+const LinkedinButton = ({ className, ...props }: Partial<LinkedinButtonProps>) => {
     return (
         <Button
-            id="google"
-            variant="outline">
-                Linkedin
+            id={props.id}
+            variant={props.variant}
+            onClick={props.onClick}
+            className={className}
+        >
+            Linkedin
         </Button>
-    )
-}
+    );
+};
+
+export default LinkedinButton;

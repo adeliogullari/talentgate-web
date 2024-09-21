@@ -9,14 +9,17 @@ interface GoogleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
     onClick: React.MouseEventHandler<HTMLButtonElement> | undefined
 }
 
-export function GoogleButton({ className, ...props }: Partial<GoogleButtonProps>) {
-
+const GoogleButton = ({ className, ...props }: Partial<GoogleButtonProps>) => {
     return (
         <Button
-            id="google"
-            variant="outline"
-            onClick={props.onClick}>
-                Google
+            id={props.id}
+            variant={props.variant}
+            onClick={props.onClick}
+            className={className}
+        >
+            Google
         </Button>
-    )
-}
+    );
+};
+
+export default GoogleButton;

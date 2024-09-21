@@ -4,15 +4,15 @@ import * as React from "react"
 import { Input } from "@/components/ui/input"
 
 interface PasswordInputProps extends React.HTMLAttributes<HTMLDivElement> {
-    id: string | undefined
-    type: React.HTMLInputTypeAttribute | undefined
-    placeholder: string | undefined
-    value: string | number | readonly string[] | undefined
-    onChange: React.ChangeEventHandler<HTMLInputElement> | undefined
+    id: string
+    type: React.HTMLInputTypeAttribute
+    placeholder: string
+    value: string | number | readonly string[]
+    onChange: React.ChangeEventHandler<HTMLInputElement>
+    className: string
 }
 
-export function PasswordInput({ className, ...props }: Partial<PasswordInputProps>) {
-
+const PasswordInput = ({ ...props }: Partial<PasswordInputProps>) => {
     return (
         <Input
             id={props.id}
@@ -20,6 +20,9 @@ export function PasswordInput({ className, ...props }: Partial<PasswordInputProp
             placeholder={props.placeholder}
             value={props.value}
             onChange={props.onChange}
+            className={props.className}
         />
-    )
-}
+    );
+};
+
+export default PasswordInput;
