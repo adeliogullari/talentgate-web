@@ -35,7 +35,7 @@ const Subbar = ({
 }) => {
   if (categories) {
     return (
-      <ScrollArea className="flex flex-col gap-3 border-r h-full min-w-60 py-4 px-3 overflow-y-auto scrollbar-thin">
+      <ScrollArea className="flex flex-col gap-3 border-r h-full min-w-60 py-4 px-3">
         {categories.map((catItem) => {
           return (
             <>

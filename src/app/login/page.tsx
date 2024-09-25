@@ -40,7 +40,7 @@ export default function Login() {
 
     return (
         <main className="flex h-screen justify-center items-center">
-            <Card className="bg-white rounded-3xl shadow-md p-5 w-96">
+            <Card className="rounded-3xl shadow-md p-5 w-96">
                 <CardHeader className="flex items-center">
                     <CardTitle className="text-2xl">Login</CardTitle>
                 </CardHeader>

@@ -21,29 +21,20 @@ export default function CompanyLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {/* MOBILE VIEW */}
-            <div className="flex flex-col lg:hidden">
-              <MobileNavbar />
-              {children}
-            </div>
-  
-            {/* DESKTOP VIEW */}
-            <div className="hidden lg:flex lg:h-screen">
-              <Sidebar />
-              <div className="flex flex-col w-full">
-                <Topbar />
-                <div className="overflow-auto h-full max-w-[85dvw]">
-                  {children}
-                </div>
-              </div>
-            </div>
-          </ThemeProvider>
+        {/* MOBILE VIEW */}
+        <div className="flex flex-col lg:hidden">
+          <MobileNavbar />
+          {children}
+        </div>
+
+        {/* DESKTOP VIEW */}
+        <div className="hidden lg:flex w-full h-full">
+          <Sidebar />
+          <div className="flex flex-col w-full">
+            <Topbar />
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );

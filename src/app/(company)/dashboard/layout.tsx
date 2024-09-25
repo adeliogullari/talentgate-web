@@ -3,47 +3,48 @@ import MobileSubbar from "../_components/navigation/MobileSubbar";
 import Subbar from "../_components/navigation/Subbar";
 import { mainNavbarItem } from "@/types/types";
 import {
-  Archive,
-  Bookmark,
-  ClipboardList,
+  Calendar,
+  CalendarClock,
+  CheckCheck,
+  Eye,
   NotebookPen,
-  PersonStanding,
+  SquareActivity,
 } from "lucide-react";
 
 const subbarItems: mainNavbarItem[] = [
   {
     id: 1,
-    title: "Board",
-    link: "/jobs/board",
-    icon: <ClipboardList />,
+    title: "Overview",
+    link: "/dashboard/overview",
+    icon: <Eye />,
   },
   {
     id: 2,
-    title: "Archive",
-    link: "/jobs/archive",
-    icon: <Archive />,
+    title: "Calendar",
+    link: "/dashboard/calendar",
+    icon: <Calendar />,
   },
   {
     id: 3,
-    title: "Candidates",
-    link: "/jobs/Candidates",
-    icon: <PersonStanding />,
+    title: "Events",
+    link: "/dashboard/events",
+    icon: <CalendarClock />,
   },
   {
     id: 4,
-    title: "Evaluations",
-    link: "/jobs/evaluations",
-    icon: <NotebookPen />,
+    title: "Tasks",
+    link: "/dashboard/tasks",
+    icon: <CheckCheck />,
   },
   {
     id: 5,
-    title: "Bookmarked",
-    link: "/jobs/bookmarked",
-    icon: <Bookmark />,
+    title: "Activity",
+    link: "/dashboard/activity",
+    icon: <SquareActivity />,
   },
 ];
 
-export default function JobsLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -55,9 +56,9 @@ export default function JobsLayout({
         <MobileSubbar subbarItems={subbarItems} />
       </div>
 
-      <div className="hidden lg:flex h-full w-full">
+      <div className="hidden lg:flex h-full">
         <Subbar subbarItems={subbarItems} />
-        <div className="w-full h-full">{children}</div>
+        <div className="w-full">{children}</div>
       </div>
     </>
   );
