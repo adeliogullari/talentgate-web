@@ -8,7 +8,7 @@ import Account from "../dropdown-menu/Account";
 const Topbar = () => {
 
   return (
-    <div className="flex w-full bg-background justify-between border-b items-center min-h-14 max-w-[85dvw] px-4 sticky top-0 z-10">
+    <div className="flex justify-between border-b items-center px-4 z-10 h-[5dvh]">
       <SearchField />
       <div className="flex items-center gap-5">
         <Help />

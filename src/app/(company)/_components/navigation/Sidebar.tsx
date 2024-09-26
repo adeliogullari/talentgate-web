@@ -59,8 +59,8 @@ const Sidebar = () => {
   const currentRoute = usePathname();
 
   return (
-    <div className="flex flex-col gap-2 border border-y-0 h-screen min-w-[15dvw] sticky left-0 top-0 bg-background">
-      <div className="text-xl text-primary border-b min-h-14 grid place-items-center">
+    <div className="flex flex-col gap-2 border border-y-0 z-10">
+      <div className="text-xl text-primary border-b grid place-items-center h-[5dvh]">
         PEOPLEGATE
       </div>
       <div className="flex flex-col gap-1 mx-2">

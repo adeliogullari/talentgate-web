@@ -193,18 +193,6 @@ const actionIcons: any = {
 };
 
 export default function DashobardActivityPage() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterAction, setFilterAction] = useState("all");
-
-  const filteredActivities = activities.filter(
-    (activity) =>
-      (filterAction === "all" || activity.action === filterAction) &&
-      (activity.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        activity.target.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (activity.position &&
-          activity.position.toLowerCase().includes(searchTerm.toLowerCase())))
-  );
-
   return (
     <div className="p-8">
       <h1 className="text-3xl font-bold mb-6">Dashboard Activity Log</h1>
@@ -212,16 +200,11 @@ export default function DashobardActivityPage() {
       <div className="flex flex-col md:flex-row justify-between mb-4 space-y-2 md:space-y-0">
         <div className="flex w-full md:w-1/3 items-center space-x-2">
           <Search className="h-4 w-4 text-gray-400" />
-          <Input
-            placeholder="Search activities..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full"
-          />
+          <Input placeholder="Search activities..." className="w-full" />
         </div>
         <div className="flex items-center space-x-2">
           <Filter className="h-4 w-4 text-gray-400" />
-          <Select value={filterAction} onValueChange={setFilterAction}>
+          <Select>
             <SelectTrigger className="w-[220px]">
               <SelectValue placeholder="Filter by action" />
             </SelectTrigger>
@@ -238,7 +221,7 @@ export default function DashobardActivityPage() {
       </div>
 
       <div className="space-y-4">
-        {filteredActivities.map((activity) => (
+        {activities.map((activity) => (
           <div
             key={activity.id}
             className="flex items-start space-x-4 p-4 border rounded-lg"
@@ -269,21 +252,9 @@ export default function DashobardActivityPage() {
                 {format(parseISO(activity.date), "MMM d, yyyy HH:mm")}
               </p>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                  <span className="sr-only">Open menu</span>
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem>View Details</DropdownMenuItem>
-                <DropdownMenuItem>Add Note</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Hide</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <ChevronDown className="h-4 w-4" />
+            </Button>
           </div>
         ))}
       </div>

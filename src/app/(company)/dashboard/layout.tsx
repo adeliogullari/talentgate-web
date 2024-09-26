@@ -56,9 +56,11 @@ export default function DashboardLayout({
         <MobileSubbar subbarItems={subbarItems} />
       </div>
 
-      <div className="hidden lg:flex h-full">
+      <div className="hidden lg:grid grid-cols-[15dvw_70dvw] h-full">
         <Subbar subbarItems={subbarItems} />
-        <div className="w-full">{children}</div>
+        <div className="overflow-y-auto">
+        {children}
+        </div>
       </div>
     </>
   );

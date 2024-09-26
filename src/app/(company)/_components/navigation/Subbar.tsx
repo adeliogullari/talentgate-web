@@ -56,7 +56,7 @@ const Subbar = ({
   }
 
   return (
-    <div className="flex flex-col gap-1 border-r h-full min-w-60 pt-2 px-2">
+    <div className="flex flex-col gap-1 border-r pt-2 px-2">
       {subbarItems.map((item) => (
         <SubbarItem item={item} key={item.id} />
       ))}

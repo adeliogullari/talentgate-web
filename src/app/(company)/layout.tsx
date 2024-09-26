@@ -28,11 +28,13 @@ export default function CompanyLayout({
         </div>
 
         {/* DESKTOP VIEW */}
-        <div className="hidden lg:flex w-full h-full">
+        <div className="hidden lg:grid grid-cols-[15dvw_85dvw] overflow-hidden">
           <Sidebar />
-          <div className="flex flex-col w-full">
+          <div className="grid grid-rows-[5dvh_95dvh] overflow-hidden">
             <Topbar />
+            <div>
             {children}
+            </div>
           </div>
         </div>
       </body>
