@@ -1,5 +1,3 @@
-// export default DashobardActivityPage;
-
 "use client";
 
 import React, { useState } from "react";
@@ -28,14 +26,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 // Mock data for activities
 const activities = [

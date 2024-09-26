@@ -7,7 +7,6 @@ import {
   CalendarClock,
   CheckCheck,
   Eye,
-  NotebookPen,
   SquareActivity,
 } from "lucide-react";
 
@@ -32,12 +31,6 @@ const subbarItems: mainNavbarItem[] = [
   },
   {
     id: 4,
-    title: "Tasks",
-    link: "/dashboard/tasks",
-    icon: <CheckCheck />,
-  },
-  {
-    id: 5,
     title: "Activity",
     link: "/dashboard/activity",
     icon: <SquareActivity />,
@@ -50,18 +43,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <>
-      <div className="flex flex-col lg:hidden">
-        {children}
-        <MobileSubbar subbarItems={subbarItems} />
-      </div>
-
-      <div className="hidden lg:grid grid-cols-[15dvw_70dvw] h-full">
-        <Subbar subbarItems={subbarItems} />
-        <div className="overflow-y-auto">
-        {children}
-        </div>
-      </div>
-    </>
+    <div className="hidden lg:grid grid-cols-[15dvw_70dvw] h-full">
+      <Subbar subbarItems={subbarItems} />
+      <div className="overflow-y-auto">{children}</div>
+    </div>
   );
 }

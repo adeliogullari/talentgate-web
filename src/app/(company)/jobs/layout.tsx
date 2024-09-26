@@ -19,27 +19,21 @@ const subbarItems: mainNavbarItem[] = [
   },
   {
     id: 2,
+    title: "Bookmarked",
+    link: "/jobs/bookmarked",
+    icon: <Bookmark />,
+  },
+  {
+    id: 3,
     title: "Archive",
     link: "/jobs/archive",
     icon: <Archive />,
   },
   {
-    id: 3,
-    title: "Candidates",
-    link: "/jobs/Candidates",
-    icon: <PersonStanding />,
-  },
-  {
     id: 4,
-    title: "Evaluations",
-    link: "/jobs/evaluations",
-    icon: <NotebookPen />,
-  },
-  {
-    id: 5,
-    title: "Bookmarked",
-    link: "/jobs/bookmarked",
-    icon: <Bookmark />,
+    title: "Candidates",
+    link: "/candidates",
+    icon: <PersonStanding />,
   },
 ];
 

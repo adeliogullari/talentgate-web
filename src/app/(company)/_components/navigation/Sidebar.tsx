@@ -37,18 +37,12 @@ const sidebarItems: mainNavbarItem[] = [
   },
   {
     id: 4,
-    title: "Mailbox",
-    link: "/mailbox",
-    icon: <Mail />,
-  },
-  {
-    id: 5,
     title: "Analytics",
     link: "/analytics",
     icon: <ChartNoAxesCombined />,
   },
   {
-    id: 6,
+    id: 5,
     title: "Talent pools",
     link: "/talent-pools",
     icon: <Archive />,

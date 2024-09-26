@@ -1,5 +1,5 @@
 import { employerDefaultJobs } from "@/lib/mock-data";
-import JobListItem from "./_components/card/JobsListItem";
+import JobListItem from "./../_components/card/JobsListItem";
 import {
   Dialog,
   DialogClose,
@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { employerJobType } from "@/types/types";
 
-const JobsPage = () => {
+const JobsBookmarkedPage = () => {
   const jobItem: employerJobType = {
     id: 0,
     title: "",
@@ -38,8 +38,8 @@ const JobsPage = () => {
   };
 
   return (
-    <div className="w-full py-6 px-4 flex flex-col">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Jobs</h1>
+    <div className="p-8 flex flex-col">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Bookmarked Jobs</h1>
       <div className="w-full flex flex-col gap-6">
         <div className="w-full flex flex-col gap-6 lg:flex-row lg:justify-between">
           <div>
@@ -135,15 +135,12 @@ const JobsPage = () => {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-            )
           </div>
         </div>
-        {employerDefaultJobs.map((jobItem) => (
-          <JobListItem jobItem={jobItem} key={jobItem.id} />
-        ))}
+              {employerDefaultJobs.map((jobItem) => jobItem.isBookmarked && <JobListItem jobItem={jobItem} key={jobItem.id} />)}
       </div>
     </div>
   );
 };
 
-export default JobsPage;
+export default JobsBookmarkedPage;

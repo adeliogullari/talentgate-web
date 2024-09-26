@@ -1,5 +1,3 @@
-// DashobardCalendarPage
-
 "use client";
 
 import React, { useState } from "react";
@@ -7,8 +5,6 @@ import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";

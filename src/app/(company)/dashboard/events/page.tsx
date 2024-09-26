@@ -1,5 +1,3 @@
-// export default DashobardEventsPage;
-
 "use client";
 
 import React, { useState } from "react";
