@@ -17,6 +17,11 @@ const nextConfig = {
                 destination: "/jobs/board",
                 permanent: true,
             },
+            {
+                source: "/settings",
+                destination: "/settings/profile",
+                permanent: true,
+            },
         ];
     }
 };

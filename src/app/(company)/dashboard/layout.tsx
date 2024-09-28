@@ -1,5 +1,4 @@
 import "@/app/globals.css";
-import MobileSubbar from "../_components/navigation/MobileSubbar";
 import Subbar from "../_components/navigation/Subbar";
 import { mainNavbarItem } from "@/types/types";
 import {

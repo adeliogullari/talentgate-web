@@ -15,7 +15,7 @@ export default function CompanyLayout({
 
       <div className="hidden lg:grid grid-cols-[15dvw_85dvw] overflow-hidden">
         <Sidebar />
-        <div className="grid grid-rows-[5dvh_95dvh] overflow-hidden">
+        <div className="grid grid-rows-[7dvh_93dvh] overflow-hidden">
           <Topbar />
           <div className="overflow-y-auto">{children}</div>
         </div>

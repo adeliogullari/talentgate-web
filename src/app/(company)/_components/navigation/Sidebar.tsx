@@ -6,9 +6,7 @@ import {
   Briefcase,
   ChartNoAxesCombined,
   HomeIcon,
-  Mail,
-  Notebook,
-  Rss,
+  AppWindow,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { mainNavbarItem } from "@/types/types";
@@ -47,6 +45,12 @@ const sidebarItems: mainNavbarItem[] = [
     link: "/talent-pools",
     icon: <Archive />,
   },
+  {
+    id: 6,
+    title: "Career Page",
+    link: "/careers",
+    icon: <AppWindow />,
+  },
 ];
 
 const Sidebar = () => {
@@ -54,7 +58,7 @@ const Sidebar = () => {
 
   return (
     <div className="flex flex-col gap-2 border border-y-0 z-10">
-      <div className="text-xl text-primary border-b grid place-items-center h-[5dvh]">
+      <div className="text-xl text-primary border-b grid place-items-center h-[7dvh]">
         PEOPLEGATE
       </div>
       <div className="flex flex-col gap-1 mx-2">

@@ -13,17 +13,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { mainNavbarItem } from "@/types/types";
+import { LogOut } from "lucide-react";
 
 const avatarDropdownMenuItems: mainNavbarItem[] = [
   {
     id: 1,
     title: "Profile",
-    link: "/",
+    link: "/settings/profile",
   },
   {
     id: 2,
     title: "Team",
-    link: "/",
+    link: "/settings/team-members",
   },
   {
     id: 3,
@@ -71,6 +72,8 @@ const Account = () => {
         >
           Dark Mode
         </DropdownMenuCheckboxItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="gap-2 text-destructive"><span><LogOut className="stroke-destructive" /></span>Log Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

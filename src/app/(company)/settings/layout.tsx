@@ -18,8 +18,8 @@ const subbarItems: mainNavbarItem[] = [
   },
   {
     id: 2,
-    title: "Notifications",
-    link: "/settings/notifications",
+    title: "Password settings",
+    link: "/settings/password-settings",
     category: "My Account",
   },
   {
