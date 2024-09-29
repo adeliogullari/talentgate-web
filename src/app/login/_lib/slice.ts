@@ -10,6 +10,10 @@ export interface LoginRequestBody {
     password?: string;
 }
 
+export interface GoogleRequestBody {
+    token?: string | null | undefined;
+}
+
 export interface ErrorResponse {
     detail: string;
 }
@@ -31,6 +35,29 @@ export const login = createAsyncThunk<
         if (response.status === 200) {
             return thunkAPI.fulfillWithValue((await response.json()))
         }
+        return thunkAPI.rejectWithValue((await response.json()))
+    }
+)
+
+export const google = createAsyncThunk<
+    LoginResponseBody,
+    GoogleRequestBody,
+    {
+        rejectValue: ErrorResponse
+    }
+>(
+    'google',
+    async(googleRequestBody: GoogleRequestBody, thunkAPI) => {
+        const response = await fetch('http://localhost:8000/api/v1/auth/google', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(googleRequestBody)
+        })
+        if (response.status === 200) {
+            console.log('hakime')
+            return thunkAPI.fulfillWithValue((await response.json()))
+        }
+        console.log('zeynep')
         return thunkAPI.rejectWithValue((await response.json()))
     }
 )
@@ -68,15 +95,15 @@ export const loginSlice = createSlice({name: 'loginSlice', initialState: LoginIn
     },
 },
 extraReducers: (builder) => {
-    builder.addCase(login.pending, (state, action) => {
+    builder.addCase(google.pending, (state, action) => {
         state.loading = 'pending'
     })
-    builder.addCase(login.fulfilled, (state, action) => {
+    builder.addCase(google.fulfilled, (state, action) => {
         state.loading = 'succeeded'
         state.accessToken = action.payload.accessToken
         state.refreshToken = action.payload.refreshToken
     })
-    builder.addCase(login.rejected, (state, action) => {
+    builder.addCase(google.rejected, (state, action) => {
         state.loading = 'failed'
         state.error = action.payload?.detail
     })
