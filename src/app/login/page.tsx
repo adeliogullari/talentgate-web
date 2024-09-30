@@ -12,11 +12,13 @@ import { updateEmail, updatePassword, login } from "./_lib/slice";
 import { signIn } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {redirect} from "next/navigation";
 
 export default function Login() {
     const dispatch = useAppDispatch();
     const email = useAppSelector((state) => state.loginReducer.email);
     const password = useAppSelector((state) => state.loginReducer.password);
+    const loading = useAppSelector((state) => state.loginReducer.loading);
 
     const handleEmailChange = () => (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(updateEmail(event.target.value));
@@ -37,6 +39,12 @@ export default function Login() {
     const handleLinkedinSignIn = () => {
         signIn("linkedin");
     };
+
+    React.useEffect(() => {
+        if (loading === "succeeded") {
+            redirect('/careers')
+        }
+    }, [loading]);
 
     return (
         <main className="flex h-screen justify-center items-center">
