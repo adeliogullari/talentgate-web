@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export interface LoginResponseBody {
-    accessToken?: string;
-    refreshToken?: string;
+    access_token?: string;
+    refresh_token?: string;
 }
 
 export interface LoginRequestBody {
@@ -54,10 +54,8 @@ export const google = createAsyncThunk<
             body: JSON.stringify(googleRequestBody)
         })
         if (response.status === 200) {
-            console.log('hakime')
             return thunkAPI.fulfillWithValue((await response.json()))
         }
-        console.log('zeynep')
         return thunkAPI.rejectWithValue((await response.json()))
     }
 )
@@ -95,15 +93,15 @@ export const loginSlice = createSlice({name: 'loginSlice', initialState: LoginIn
     },
 },
 extraReducers: (builder) => {
-    builder.addCase(google.pending, (state, action) => {
+    builder.addCase(login.pending, (state, action) => {
         state.loading = 'pending'
     })
-    builder.addCase(google.fulfilled, (state, action) => {
+    builder.addCase(login.fulfilled, (state, action) => {
         state.loading = 'succeeded'
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
+        state.accessToken = action.payload.access_token
+        state.refreshToken = action.payload.refresh_token
     })
-    builder.addCase(google.rejected, (state, action) => {
+    builder.addCase(login.rejected, (state, action) => {
         state.loading = 'failed'
         state.error = action.payload?.detail
     })
