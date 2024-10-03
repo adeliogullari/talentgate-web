@@ -109,6 +109,14 @@ extraReducers: (builder) => {
         state.loading = 'failed'
         state.error = action.payload?.detail
     })
+            // Handle fulfilled state for Google login
+        builder.addCase(google.fulfilled, (state, action) => {
+            state.loading = 'succeeded';
+            state.accessToken = action.payload.access_token;
+            state.refreshToken = action.payload.refresh_token;
+            Cookies.set("accessToken", action.payload.access_token!);
+            Cookies.set("refreshToken", action.payload.refresh_token!);
+        });
 }})
 
 export const {updateEmail, updatePassword, updateAccessToken, updateRefreshToken} = loginSlice.actions
