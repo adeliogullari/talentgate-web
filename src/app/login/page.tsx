@@ -8,13 +8,14 @@ import LoginButton from "./_components/button/login";
 import GoogleButton from "./_components/button/google";
 import LinkedinButton from "./_components/button/linkedin";
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
-import { updateEmail, updatePassword, login } from "./_lib/slice";
-import { signIn } from 'next-auth/react';
+import { updateEmail, updatePassword, login, google } from "./_lib/slice";
+import { signIn, useSession } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {redirect} from "next/navigation";
 
 export default function Login() {
+    const { data: session } = useSession();
     const dispatch = useAppDispatch();
     const email = useAppSelector((state) => state.loginReducer.email);
     const password = useAppSelector((state) => state.loginReducer.password);
@@ -34,6 +35,7 @@ export default function Login() {
 
     const handleGoogleSignIn = () => {
         signIn("google");
+        dispatch(google({token: session.idToken}));
     };
 
     const handleLinkedinSignIn = () => {
