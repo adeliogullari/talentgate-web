@@ -35,18 +35,12 @@ const sidebarItems: mainNavbarItem[] = [
   },
   {
     id: 4,
-    title: "Analytics",
-    link: "/analytics",
-    icon: <ChartNoAxesCombined />,
-  },
-  {
-    id: 5,
     title: "Talent pools",
     link: "/talent-pools",
     icon: <Archive />,
   },
   {
-    id: 6,
+    id: 5,
     title: "Career Page",
     link: "/careers",
     icon: <AppWindow />,

@@ -149,7 +149,7 @@ const CareerPage = () => {
                 <p className="font-semibold pb-2 text-lg">Job Type</p>
                 <div className="flex flex-col gap-2">
                   {filterGroup.jobType.map((item) => (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" key={item.id}>
                       <Checkbox className="size-6" />
                       <p className="text-lg">{item.label}</p>
                     </div>
@@ -160,7 +160,7 @@ const CareerPage = () => {
                 <p className="font-semibold pb-2 text-lg">On-Site / Remote</p>
                 <div className="flex flex-col gap-2">
                   {filterGroup.remote.map((item) => (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" key={item.id}>
                       <Checkbox className="size-6" />
                       <p className="text-lg">{item.label}</p>
                     </div>
@@ -171,7 +171,7 @@ const CareerPage = () => {
                 <p className="font-semibold pb-2 text-lg">Department</p>
                 <div className="flex flex-col gap-2">
                   {filterGroup.department.map((item) => (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" key={item.id}>
                       <Checkbox className="size-6" />
                       <p className="text-lg">{item.label}</p>
                     </div>
@@ -184,7 +184,7 @@ const CareerPage = () => {
           {/* JOBS GRID */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {defaultJobs.map((job: any) => (
-              <Link href="/careers/TODO">
+              <Link href="/careers/TODO" key={job.id}>
                 <Card key={job.id} className="group cursor-pointer">
                   <CardHeader>
                     <CardTitle className="group-hover:underline">

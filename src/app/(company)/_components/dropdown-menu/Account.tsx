@@ -73,7 +73,7 @@ const Account = () => {
           Dark Mode
         </DropdownMenuCheckboxItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2 text-destructive"><span><LogOut className="stroke-destructive" /></span>Log Out</DropdownMenuItem>
+        <DropdownMenuItem className="gap-2 text-destructive focus:bg-destructive"><span><LogOut/></span>Log Out</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

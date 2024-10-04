@@ -2,7 +2,6 @@
 
 import SearchField from "../input/SearchField";
 import Help from "../button/Help";
-import Notifications from "../dropdown-menu/Notifications";
 import Account from "../dropdown-menu/Account";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Bell } from "lucide-react";
