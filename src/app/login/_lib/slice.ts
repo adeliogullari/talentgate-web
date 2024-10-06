@@ -2,17 +2,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 
-export interface LoginResponseBody {
+export interface LoginResponse {
     access_token?: string;
     refresh_token?: string;
 }
 
-export interface LoginRequestBody {
+export interface LoginRequest {
     email?: string;
     password?: string;
 }
 
-export interface GoogleRequestBody {
+export interface GoogleResponse {
+    access_token?: string;
+    refresh_token?: string;
+}
+
+export interface GoogleRequest {
     token?: string | null | undefined;
 }
 
@@ -21,15 +26,15 @@ export interface ErrorResponse {
 }
 
 export const login = createAsyncThunk<
-    LoginResponseBody,
-    LoginRequestBody,
+    LoginResponse,
+    LoginRequest,
     {
         rejectValue: ErrorResponse
     }
 >(
     'login',
-    async(loginRequestBody: LoginRequestBody, thunkAPI) => {
-        const response = await fetch('http://localhost:8000/api/v1/auth/login', {
+    async(loginRequestBody: LoginRequest, thunkAPI) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(loginRequestBody)
@@ -42,15 +47,15 @@ export const login = createAsyncThunk<
 )
 
 export const google = createAsyncThunk<
-    LoginResponseBody,
-    GoogleRequestBody,
+    GoogleResponse,
+    GoogleRequest,
     {
         rejectValue: ErrorResponse
     }
 >(
     'google',
-    async(googleRequestBody: GoogleRequestBody, thunkAPI) => {
-        const response = await fetch('http://localhost:8000/api/v1/auth/google', {
+    async(googleRequestBody: GoogleRequest, thunkAPI) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/google`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(googleRequestBody)
@@ -102,21 +107,27 @@ extraReducers: (builder) => {
         state.loading = 'succeeded'
         state.accessToken = action.payload.access_token
         state.refreshToken = action.payload.refresh_token
-        Cookies.set("accessToken", action.payload.access_token!)
-        Cookies.set("refreshToken", action.payload.refresh_token!)
+        Cookies.set("accessToken", action.payload.access_token!, {secure: true, sameSite: 'Strict', expires: 1/24});
+        Cookies.set("refreshToken", action.payload.refresh_token!, {secure: true, sameSite: 'Strict', expires: 180});
     })
     builder.addCase(login.rejected, (state, action) => {
         state.loading = 'failed'
         state.error = action.payload?.detail
     })
-            // Handle fulfilled state for Google login
-        builder.addCase(google.fulfilled, (state, action) => {
+    builder.addCase(google.pending, (state, action) => {
+        state.loading = 'pending'
+    })
+    builder.addCase(google.fulfilled, (state, action) => {
             state.loading = 'succeeded';
             state.accessToken = action.payload.access_token;
             state.refreshToken = action.payload.refresh_token;
-            Cookies.set("accessToken", action.payload.access_token!);
-            Cookies.set("refreshToken", action.payload.refresh_token!);
+            Cookies.set("accessToken", action.payload.access_token!, {secure: true, sameSite: 'Strict', expires: 1/24});
+            Cookies.set("refreshToken", action.payload.refresh_token!, {secure: true, sameSite: 'Strict', expires: 180});
         });
+    builder.addCase(google.rejected, (state, action) => {
+            state.loading = 'failed'
+            state.error = action.payload?.detail
+        })
 }})
 
 export const {updateEmail, updatePassword, updateAccessToken, updateRefreshToken} = loginSlice.actions
