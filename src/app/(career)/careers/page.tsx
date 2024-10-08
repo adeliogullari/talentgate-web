@@ -185,7 +185,7 @@ const CareerPage = () => {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {defaultJobs.map((job: any) => (
               <Link href="/careers/TODO" key={job.id}>
-                <Card key={job.id} className="group cursor-pointer">
+                <Card key={job.id} className="group cursor-pointer h-full">
                   <CardHeader>
                     <CardTitle className="group-hover:underline">
                       {job.title}

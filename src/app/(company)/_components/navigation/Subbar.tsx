@@ -38,7 +38,7 @@ const Subbar = ({
       <ScrollArea className="flex flex-col gap-3 border-r h-full min-w-60 py-4 px-3">
         {categories.map((catItem) => {
           return (
-            <>
+            <div key={catItem}>
               <Label className="text-muted-foreground">{catItem}</Label>
               <div className="flex flex-col gap-1">
                 {subbarItems.map((item) => {
@@ -47,7 +47,7 @@ const Subbar = ({
                   }
                 })}
               </div>
-            </>
+            </div>
           );
         })}
         <ScrollBar />
