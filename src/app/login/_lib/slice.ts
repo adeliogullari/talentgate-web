@@ -21,6 +21,15 @@ export interface GoogleRequest {
     token?: string | null | undefined;
 }
 
+export interface LinkedinResponse {
+    access_token?: string;
+    refresh_token?: string;
+}
+
+export interface LinkedinRequest {
+    token?: string | null | undefined;
+}
+
 export interface ErrorResponse {
     detail: string;
 }
@@ -59,6 +68,27 @@ export const google = createAsyncThunk<
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(googleRequestBody)
+        })
+        if (response.status === 200) {
+            return thunkAPI.fulfillWithValue((await response.json()))
+        }
+        return thunkAPI.rejectWithValue((await response.json()))
+    }
+)
+
+export const linkedin = createAsyncThunk<
+    LinkedinResponse,
+    LinkedinRequest,
+    {
+        rejectValue: ErrorResponse
+    }
+>(
+    'linkedin',
+    async(linkedinRequestBody: LinkedinRequest, thunkAPI) => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/linkedin`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(linkedinRequestBody)
         })
         if (response.status === 200) {
             return thunkAPI.fulfillWithValue((await response.json()))
@@ -123,11 +153,25 @@ extraReducers: (builder) => {
             state.refreshToken = action.payload.refresh_token;
             Cookies.set("accessToken", action.payload.access_token!, {secure: true, sameSite: 'Strict', expires: 1/24});
             Cookies.set("refreshToken", action.payload.refresh_token!, {secure: true, sameSite: 'Strict', expires: 180});
-        });
+    });
     builder.addCase(google.rejected, (state, action) => {
             state.loading = 'failed'
             state.error = action.payload?.detail
-        })
+    })
+    builder.addCase(linkedin.pending, (state, action) => {
+        state.loading = 'pending'
+    })
+    builder.addCase(linkedin.fulfilled, (state, action) => {
+            state.loading = 'succeeded';
+            state.accessToken = action.payload.access_token;
+            state.refreshToken = action.payload.refresh_token;
+            Cookies.set("accessToken", action.payload.access_token!, {secure: true, sameSite: 'Strict', expires: 1/24});
+            Cookies.set("refreshToken", action.payload.refresh_token!, {secure: true, sameSite: 'Strict', expires: 180});
+    });
+    builder.addCase(linkedin.rejected, (state, action) => {
+            state.loading = 'failed'
+            state.error = action.payload?.detail
+    })
 }})
 
 export const {updateEmail, updatePassword, updateAccessToken, updateRefreshToken} = loginSlice.actions

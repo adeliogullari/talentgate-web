@@ -3,7 +3,6 @@ import GoogleProvider from "next-auth/providers/google"
 import LinkedinProvider from "next-auth/providers/linkedin"
 
 
-
 const handler = NextAuth({
     providers: [
         GoogleProvider({
@@ -20,12 +19,14 @@ const handler = NextAuth({
             if (account?.provider === 'google') {
                 token.idToken = account.id_token;
             }
+            if (account?.provider == 'linkedin') {
+                token.idToken = account.access_token;
+            }
 
             return token;
         },
         async session({ session, token }) {
             session.idToken = token.idToken;
-
             return session;
         },
     },

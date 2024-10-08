@@ -15,7 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {redirect} from "next/navigation";
 
 export default function Login() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const dispatch = useAppDispatch();
     const email = useAppSelector((state) => state.loginReducer.email);
     const password = useAppSelector((state) => state.loginReducer.password);
@@ -35,7 +35,6 @@ export default function Login() {
 
     const handleGoogleSignIn = () => {
         signIn("google");
-        dispatch(google({token: session.idToken}));
     };
 
     const handleLinkedinSignIn = () => {
@@ -46,7 +45,10 @@ export default function Login() {
         if (loading === "succeeded") {
             redirect('/careers')
         }
-    }, [loading]);
+        if (session?.idToken) {
+            dispatch(google({token: session.idToken}));
+        }
+    }, [loading, session]);
 
     return (
         <main className="flex h-screen justify-center items-center">
