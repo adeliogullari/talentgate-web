@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 
 const JobListItem = ({ jobItem }: { jobItem: employerJobType }) => {
   return (
@@ -77,6 +78,14 @@ const JobListItem = ({ jobItem }: { jobItem: employerJobType }) => {
                       id="jobTitle"
                       defaultValue={jobItem?.title}
                       placeholder="Job Title"
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="jobDescription">Job Description</Label>
+                    <Textarea
+                      id="jobDescription"
+                      defaultValue={jobItem?.title}
+                      placeholder="Job Description"
                     />
                   </div>
                   <div className="grid gap-2">
