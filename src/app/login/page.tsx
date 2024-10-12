@@ -13,6 +13,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {redirect} from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
     const { data: session, status } = useSession();
@@ -89,9 +90,11 @@ export default function Login() {
                 <CardFooter className="flex flex-col items-center">
                     <CardDescription className="flex flex-row justify-center items-center">
                         <span className="text-muted-foreground">{"Don't have an account?"}</span>
-                        <Button variant="link" className="p-0 ml-1 underline decoration-transparent">
-                            Register
-                        </Button>
+                        <Link href={"/register"}>
+                            <Button variant="link" className="p-0 ml-1 underline decoration-transparent">
+                                Register
+                            </Button>
+                        </Link>
                     </CardDescription>
                 </CardFooter>
             </Card>
