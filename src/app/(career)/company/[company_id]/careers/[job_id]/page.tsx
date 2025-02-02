@@ -2,7 +2,7 @@
 
 import { vacantPositionData } from "@/lib/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   ArrowLeft,
@@ -31,9 +31,31 @@ import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { useDropzone } from "react-dropzone";
 import Link from "next/link";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { retrieveCareerJob } from "./_lib/slice";
 
-const ApplyPage = ({ params }: { params: { slug: string } }) => {
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
+import { useParams } from "next/navigation";
+import { Oval } from "react-loader-spinner";
+
+const ApplyPage = ({ params }: { params: { job_id: string } }) => {
   const [tab, setTab] = useState<string>("job details");
+  const dispatch = useAppDispatch();
+  const job = useAppSelector((state) => state.careerJobReducer.job || {});
+  const loading = useAppSelector((state) => state.careerJobReducer.loading);
+  const company_id = useParams().company_id;
+
+  useEffect(() => {
+    if (job?.id !== Number(params.job_id)) {
+      dispatch(
+        retrieveCareerJob({
+          job_id: Number(params.job_id),
+          company_id: Number(company_id),
+        })
+      );
+    }
+  }, [dispatch]);
 
   const onTabChange = (value: string) => {
     setTab(value);
@@ -55,7 +77,6 @@ const ApplyPage = ({ params }: { params: { slug: string } }) => {
       reader.onload = () => {
         console.log(acceptedFiles);
       };
-      // reader.readAsArrayBuffer(file);
     });
   }, []);
   const {
@@ -89,13 +110,37 @@ const ApplyPage = ({ params }: { params: { slug: string } }) => {
     );
   });
 
+  if (loading === "failed") {
+    return (
+      <div className="w-full h-screen flex flex-col justify-center items-center gap-4">
+        <h1 className="text-3xl font-bold">Failed to load the requested job.</h1>
+        <Link href={"../careers"}>
+          <Button className="gap-2">
+            <span>
+              <ArrowLeft className="size-4" />
+            </span>
+            <span>Go back to available jobs list</span>
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  if (loading === "pending") {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Oval color="#ea580c" secondaryColor="gray" />
+      </div>
+    );
+  }
+
   return (
     <div className="lg:w-1/2 lg:mx-auto">
-      <Button className="absolute top-4 left-4" variant="ghost">
-        <Link href="/careers">
+      <Link href={`/company/${company_id}/careers`}>
+        <Button className="absolute top-4 left-4" variant="ghost">
           <ArrowLeft />
-        </Link>
-      </Button>
+        </Button>
+      </Link>
 
       <div className="h-full flex flex-col gap-8 p-4 lg:max-w-[70dvw] lg:mx-auto">
         {/* JOB DETAIL BANNER */}
@@ -103,27 +148,28 @@ const ApplyPage = ({ params }: { params: { slug: string } }) => {
           <div className="size-20 rounded-full bg-blue-700 grid place-items-center lg:size-40 lg:text-2xl">
             {vacantPositionData.companyName}
           </div>
-          <h1 className="text-3xl font-semibold lg:text-5xl">
-            {vacantPositionData.roleTitle}
-          </h1>
+          <h1 className="text-3xl font-semibold lg:text-5xl">{job?.title}</h1>
           <div className="flex gap-4 flex-wrap">
             <Badge className="w-fit h-fit flex gap-3">
               <span>
                 <HomeIcon size={24} />
               </span>
-              <span>{vacantPositionData.remote}</span>
+              <span>{job?.location?.type}</span>
             </Badge>
             <Badge className="w-fit h-fit flex gap-3">
               <span>
                 <MapPin size={24} />
               </span>
-              <span>{vacantPositionData.location}</span>
+              <p>
+                {job?.location?.country}, {job?.location?.city},{" "}
+                {job?.location?.state}
+              </p>
             </Badge>
             <Badge className="w-fit h-fit flex gap-3">
               <span>
                 <BookUser size={24} />
               </span>
-              <span>{vacantPositionData.department}</span>
+              <span>{job?.department}</span>
             </Badge>
           </div>
         </div>
@@ -138,17 +184,13 @@ const ApplyPage = ({ params }: { params: { slug: string } }) => {
           {/* JOB DETAILS TAB */}
           <TabsContent value="job details">
             <Card>
-              <CardHeader>
-                <CardTitle>Job Description</CardTitle>
-                <CardDescription className="text-md leading-loose">
-                  {vacantPositionData.jobDescription}
-                </CardDescription>
-              </CardHeader>
-              <CardHeader>
-                <CardTitle>Job Requirements</CardTitle>
-                <CardDescription className="text-md leading-loose">
-                  {vacantPositionData.jobRequirements}
-                </CardDescription>
+              <CardHeader className="h-fit pb-0">
+                <ReactQuill
+                  value={job?.description}
+                  theme="bubble"
+                  readOnly={true}
+                  className="quillComponent h-fit"
+                />
               </CardHeader>
 
               {/* CTA GROUP */}
@@ -160,10 +202,10 @@ const ApplyPage = ({ params }: { params: { slug: string } }) => {
                   >
                     Apply
                   </Button>
-                  <span className="font-semibold">Or</span>
+                  {/* <span className="font-semibold">Or</span>
                   <Button className="w-full" variant={"secondary"}>
                     Refer a Friend
-                  </Button>
+                  </Button> */}
                 </div>
               </CardFooter>
             </Card>

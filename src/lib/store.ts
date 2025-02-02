@@ -1,18 +1,22 @@
-import { configureStore } from '@reduxjs/toolkit'
-import loginReducer from '@/app/login/_lib/slice'
-import registerReducer from '@/app/register/_lib/slice'
+import { configureStore } from "@reduxjs/toolkit";
+import loginReducer from "@/app/login/_lib/slice";
+import registerReducer from "@/app/register/_lib/slice";
+import careerJobsReducer from "@/app/(career)/company/[company_id]/careers/_lib/slice";
+import careerJobReducer from "@/app/(career)/company/[company_id]/careers/[job_id]/_lib/slice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       loginReducer: loginReducer,
-      registerReducer: registerReducer
+      registerReducer: registerReducer,
+      careerJobsReducer: careerJobsReducer,
+      careerJobReducer: careerJobReducer,
     },
-  })
-}
+  });
+};
 
 // Infer the type of makeStore
-export type AppStore = ReturnType<typeof makeStore>
+export type AppStore = ReturnType<typeof makeStore>;
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore['getState']>
-export type AppDispatch = AppStore['dispatch']
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];

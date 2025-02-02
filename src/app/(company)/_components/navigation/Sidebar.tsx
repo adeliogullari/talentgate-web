@@ -42,7 +42,7 @@ const sidebarItems: mainNavbarItem[] = [
   {
     id: 5,
     title: "Career Page",
-    link: "/careers",
+    link: "/company/1/careers",
     icon: <AppWindow />,
   },
 ];

@@ -1,11 +1,11 @@
 export type jobType = {
   id: number;
   title: string;
-  desc: string;
-  location: string;
+  description: string;
+  employment_type: string;
   remote: string;
   department: string;
-  type: string;
+  location: string;
 };
 
 export type employerJobType = {

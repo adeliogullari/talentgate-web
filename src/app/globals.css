@@ -67,3 +67,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+.quillComponent {
+  h3 {
+    @apply font-bold text-lg text-accent-foreground;
+  }
+
+  h2 {
+    @apply font-bold text-2xl text-accent-foreground;
+  }
+
+  h1 {
+    @apply font-bold text-4xl text-accent-foreground;
+  }
+
+  p {
+    @apply text-base text-accent-foreground;
+  }
+
+  ul, ol {
+    @apply text-base text-accent-foreground;
+  }
+}
