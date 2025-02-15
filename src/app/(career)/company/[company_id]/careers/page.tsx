@@ -26,6 +26,8 @@ import { retrieveCareerJobs } from "./_lib/slice";
 import {
   useParams,
   usePathname,
+  useRouter,
+  useSearchParams,
 } from "next/navigation";
 import { Oval } from "react-loader-spinner";
 import {
@@ -37,68 +39,76 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
-const filterGroup: { [key: string]: any } = {
+interface FilterGroup {
+  title: string;
+  EmploymentType: { id: number; label: string; checked: boolean }[];
+  locationType: { id: number; label: string; checked: boolean }[];
+  department: { id: number; label: string; checked: boolean }[];
+}
+
+const filterGroup: FilterGroup = {
   title: "",
-  jobType: [
+  EmploymentType: [
     {
-      id: "full-time",
+      id: 0,
       label: "Full-Time",
       checked: false,
     },
     {
-      id: "part-time",
+      id: 1,
       label: "Part-Time",
       checked: false,
     },
     {
-      id: "internship",
+      id: 2,
       label: "Internship",
       checked: false,
     },
   ],
-  remoteType: [
+  locationType: [
     {
-      id: "remote",
+      id: 0,
       label: "Remote",
       checked: false,
     },
     {
-      id: "hybrid",
+      id: 1,
       label: "Hybrid",
       checked: false,
     },
     {
-      id: "onsite",
-      label: "On-Site",
+      id: 2,
+      label: "Onsite",
       checked: false,
     },
   ],
   department: [
     {
-      id: "engineering",
+      id: 0,
       label: "Engineering",
       checked: false,
     },
     {
-      id: "marketing",
+      id: 1,
       label: "Marketing",
       checked: false,
     },
     {
-      id: "sales",
+      id: 2,
       label: "Sales",
       checked: false,
     },
     {
-      id: "analytics",
+      id: 3,
       label: "Analytics",
       checked: false,
     },
   ],
 };
 
-type JobType = {
+type JobCardType = {
   id: string;
   title: string;
   description: string;
@@ -108,13 +118,15 @@ type JobType = {
   location: {
     id: number;
     type: string;
-    city: string;
-    state: string;
-    country: string;
+    address: {
+      city: string;
+      state: string;
+      country: string;
+    };
   };
 };
 
-const JobCard = ({ job }: { job: JobType }) => {
+const JobCard = ({ job }: { job: JobCardType }) => {
   // Component States
   const [shareLinkTriggered, setShareLinkTriggered] = useState(false);
 
@@ -162,8 +174,8 @@ const JobCard = ({ job }: { job: JobType }) => {
                 <MapPin />
               </span>
               <p>
-                {job.location?.country}, {job.location?.state},{" "}
-                {job.location?.city}
+                {job.location?.address?.country}, {job.location?.address?.state}
+                , {job.location?.address?.city}
               </p>
             </Badge>
           </div>
@@ -218,6 +230,8 @@ const JobCard = ({ job }: { job: JobType }) => {
 const CareerPage = () => {
   // Component States
   const [renderFilterGroup, setRenderFilterGroup] = useState(false);
+  const [searchFieldValue, setSearchFieldValue] = useState("");
+  const [filters, setFilters] = useState(filterGroup);
 
   // Redux States
   const dispatch = useAppDispatch();
@@ -226,14 +240,98 @@ const CareerPage = () => {
 
   // Router States
   const company_id = useParams().company_id;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   // Functions
   const toggleFilterGroup = () => {
     setRenderFilterGroup(!renderFilterGroup);
   };
 
-  const fetchJobs = () => {
-    dispatch(retrieveCareerJobs(Number(company_id)));
+  const fetchJobs = (searchParams?: string) => {
+    dispatch(
+      retrieveCareerJobs({
+        company_id: company_id,
+        query_parameters: searchParams,
+      })
+    );
+  };
+
+  const changeSearchFieldValue = (e: any) => {
+    setSearchFieldValue(e.target.value);
+  };
+
+  const handleSearchTitle = () => {
+    setFilters({
+      ...filters,
+      title: searchFieldValue,
+    });
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (searchFieldValue !== "") {
+      params.append("title", searchFieldValue);
+    } else {
+      params.delete("title");
+    }
+
+    router.push(pathname + "?" + params.toString(), { scroll: false });
+  };
+
+  const handleEmploymentTypeFilter = (id: number) => {
+    const updatedFilters = { ...filters };
+    updatedFilters.EmploymentType[id].checked =
+      !updatedFilters.EmploymentType[id].checked;
+    setFilters(updatedFilters);
+
+    const params = new URLSearchParams(searchParams.toString());
+
+    const label = updatedFilters.EmploymentType[id].label;
+
+    if (updatedFilters.EmploymentType[id].checked) {
+      params.append("employment_type", label);
+    } else {
+      params.delete("employment_type", label);
+    }
+
+    router.push(pathname + "?" + params.toString(), { scroll: false });
+  };
+
+  const handleLocationTypeFilter = (id: number) => {
+    const updatedFilters = { ...filters };
+    updatedFilters.locationType[id].checked =
+      !updatedFilters.locationType[id].checked;
+    setFilters(updatedFilters);
+
+    const params = new URLSearchParams(searchParams.toString());
+    const label = updatedFilters.locationType[id].label;
+
+    if (updatedFilters.locationType[id].checked) {
+      params.append("location_type", label);
+    } else {
+      params.delete("location_type", label);
+    }
+
+    router.push(pathname + "?" + params.toString(), { scroll: false });
+  };
+
+  const handleDepartmentFilter = (id: number) => {
+    const updatedFilters = { ...filters };
+    updatedFilters.department[id].checked =
+      !updatedFilters.department[id].checked;
+    setFilters(updatedFilters);
+
+    const params = new URLSearchParams(searchParams.toString());
+    const label = updatedFilters.department[id].label;
+
+    if (updatedFilters.department[id].checked) {
+      params.append("department", label);
+    } else {
+      params.delete("department", label);
+    }
+
+    router.push(pathname + "?" + params.toString(), { scroll: false });
   };
 
   // Effects
@@ -243,9 +341,35 @@ const CareerPage = () => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    const titleParam = searchParams.get("title");
+    const EmploymentTypeParam = searchParams.getAll("employment_type");
+    const locationTypeParam = searchParams.getAll("location_type");
+    const departmentParam = searchParams.getAll("department");
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      title: titleParam?.toString() || "",
+      EmploymentType: prevFilters.EmploymentType.map((item) => ({
+        ...item,
+        checked: EmploymentTypeParam.includes(item.label),
+      })),
+      locationType: prevFilters.locationType.map((item) => ({
+        ...item,
+        checked: locationTypeParam.includes(item.label),
+      })),
+      department: prevFilters.department.map((item) => ({
+        ...item,
+        checked: departmentParam.includes(item.label),
+      })),
+    }));
+
+    fetchJobs(searchParams.toString());
+  }, [searchParams]);
+
   // Render
   return (
-    <>
+    <div className="pb-10">
       {/* HEADER */}
       <div className="flex items-center justify-around w-full sticky top-0 bg-background z-10 py-2">
         <div className="size-12 bg-pink-500 rounded-xl grid text-center items-center">
@@ -270,17 +394,27 @@ const CareerPage = () => {
               Explore our open positions and join our growing team.
             </p>
             <div className="w-4/5 lg:w-full h-fit relative">
-              <Input
-                placeholder="Search"
-                className="w-full h-fit"
-              />
-              <button className="right-3 top-0 h-full absolute">
-                <SearchIcon className="stroke-muted-foreground" />
-              </button>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSearchTitle();
+                }}
+              >
+                <Input
+                  placeholder="Search"
+                  className="w-full h-fit"
+                  onChange={changeSearchFieldValue}
+                  value={searchFieldValue}
+                />
+                <button type="submit" className="right-3 top-0 h-full absolute">
+                  <SearchIcon className="stroke-muted-foreground" />
+                </button>
+              </form>
             </div>
           </div>
         </div>
 
+        {/* PAGE CONTENT */}
         <div className="p-4 flex flex-col gap-12 lg:max-h-[55dvh] lg:flex-row lg:gap-32 lg:p-8 lg:pt-16">
           {/* FILTER GROUP */}
           <div className="w-fit">
@@ -295,39 +429,68 @@ const CareerPage = () => {
             </Button>
 
             <div
-              className={cn("hidden lg:flex flex-col gap-6", [
+              className={cn("hidden w-full lg:flex flex-col gap-6", [
                 renderFilterGroup && "flex",
               ])}
             >
+              {/* JOB TYPE FILTER */}
               <div>
                 <p className="font-semibold pb-2 text-lg">Job Type</p>
                 <div className="flex flex-col gap-2">
-                  {filterGroup.jobType.map((item: any) => (
+                  {filterGroup.EmploymentType.map((item: any) => (
                     <div className="flex items-center gap-2" key={item.id}>
-                      <Checkbox className="size-6" />
-                      <p className="text-lg">{item.label}</p>
+                      <Checkbox
+                        className="rounded-[5px] size-6"
+                        checked={filters.EmploymentType[item.id].checked}
+                        onCheckedChange={() => {
+                          handleEmploymentTypeFilter(item.id);
+                        }}
+                      />
+                      <Label className="text-lg font-normal">
+                        {item.label}
+                      </Label>
                     </div>
                   ))}
                 </div>
               </div>
+              {/* REMOTE TYPE FILTER */}
               <div>
-                <p className="font-semibold pb-2 text-lg">On-Site / Remote</p>
+                <p className="font-semibold pb-2 text-lg text-nowrap">
+                  On-Site / Remote
+                </p>
                 <div className="flex flex-col gap-2">
-                  {filterGroup.remoteType.map((item: any) => (
+                  {filterGroup.locationType.map((item: any) => (
                     <div className="flex items-center gap-2" key={item.id}>
-                      <Checkbox className="size-6" />
-                      <p className="text-lg">{item.label}</p>
+                      <Checkbox
+                        className="rounded-[5px] size-6"
+                        checked={filters.locationType[item.id].checked}
+                        onCheckedChange={() => {
+                          handleLocationTypeFilter(item.id);
+                        }}
+                      />
+                      <Label className="text-lg font-normal">
+                        {item.label}
+                      </Label>
                     </div>
                   ))}
                 </div>
               </div>
+              {/* DEPARTMENT FILTER */}
               <div>
                 <p className="font-semibold pb-2 text-lg">Department</p>
                 <div className="flex flex-col gap-2">
                   {filterGroup.department.map((item: any) => (
                     <div className="flex items-center gap-2" key={item.id}>
-                      <Checkbox className="size-6" />
-                      <p className="text-lg">{item.label}</p>
+                      <Checkbox
+                        className="rounded-[5px] size-6"
+                        checked={filters.department[item.id].checked}
+                        onCheckedChange={() => {
+                          handleDepartmentFilter(item.id);
+                        }}
+                      />
+                      <Label className="text-lg font-normal">
+                        {item.label}
+                      </Label>
                     </div>
                   ))}
                 </div>
@@ -359,14 +522,14 @@ const CareerPage = () => {
               <h3 className="text-xl font-semibold">
                 We couldn’t load job listings. Please try again.
               </h3>
-              <Button className="mx-auto" onClick={fetchJobs}>
+              <Button className="mx-auto" onClick={() => fetchJobs()}>
                 Retry loading jobs
               </Button>
             </div>
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -3,16 +3,23 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 export interface CareerJobResponse {
   id?: number;
   title?: string;
-  description?: string;
   department?: string;
+  description?: string;
   employment_type?: string;
   job_post_deadline?: string;
   location?: {
     id?: number;
     type?: string;
-    city?: string;
-    state?: string;
-    country?: string;
+    latitude?: number;
+    longitude?: number;
+    address?: {
+      id?: number;
+      unit?: string;
+      street?: string;
+      city?: string;
+      state?: string;
+      country?: string;
+    };
   };
   company_id?: number;
   created_at?: string;
@@ -35,8 +42,15 @@ export const retrieveCareerJob = createAsyncThunk<
     rejectValue: ErrorResponse;
   }
 >("retrieveCareerJob", async ({job_id, company_id}, thunkAPI) => {
+  // const response = await fetch(
+  //   `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/careers/companies/${company_id}/jobs/${job_id}`,
+  //   {
+  //     method: "GET",
+  //     headers: { "Content-Type": "application/json" },
+  //   }
+  // );
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/careers/companies/${company_id}/jobs/${job_id}`,
+    `http://localhost:8001/jobs/${job_id}`,
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },

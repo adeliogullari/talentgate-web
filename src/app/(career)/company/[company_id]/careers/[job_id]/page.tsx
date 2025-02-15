@@ -1,6 +1,4 @@
 "use client";
-
-import { vacantPositionData } from "@/lib/mock-data";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCallback, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +12,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -33,7 +30,6 @@ import { useDropzone } from "react-dropzone";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { retrieveCareerJob } from "./_lib/slice";
-
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 import { useParams } from "next/navigation";
@@ -113,7 +109,9 @@ const ApplyPage = ({ params }: { params: { job_id: string } }) => {
   if (loading === "failed") {
     return (
       <div className="w-full h-screen flex flex-col justify-center items-center gap-4">
-        <h1 className="text-3xl font-bold">Failed to load the requested job.</h1>
+        <h1 className="text-3xl font-bold">
+          Failed to load the requested job.
+        </h1>
         <Link href={"../careers"}>
           <Button className="gap-2">
             <span>
@@ -146,7 +144,7 @@ const ApplyPage = ({ params }: { params: { job_id: string } }) => {
         {/* JOB DETAIL BANNER */}
         <div className="flex flex-col gap-4 p-4 rounded-md bg-gradient-to-tr from-secondary to-primary lg:h-[45dvh] items-center lg:justify-center lg:gap-12">
           <div className="size-20 rounded-full bg-blue-700 grid place-items-center lg:size-40 lg:text-2xl">
-            {vacantPositionData.companyName}
+            {company_id}
           </div>
           <h1 className="text-3xl font-semibold lg:text-5xl">{job?.title}</h1>
           <div className="flex gap-4 flex-wrap">
@@ -161,8 +159,8 @@ const ApplyPage = ({ params }: { params: { job_id: string } }) => {
                 <MapPin size={24} />
               </span>
               <p>
-                {job?.location?.country}, {job?.location?.city},{" "}
-                {job?.location?.state}
+                {job?.location?.address?.country},{" "}
+                {job?.location?.address?.city}, {job?.location?.address?.state}
               </p>
             </Badge>
             <Badge className="w-fit h-fit flex gap-3">
