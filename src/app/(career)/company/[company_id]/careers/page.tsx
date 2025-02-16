@@ -143,14 +143,14 @@ const JobCard = ({ job }: { job: JobCardType }) => {
 
   // Render
   return (
-    <div className="border p-6 rounded-md w-full flex group cursor-pointer">
+    <div className="border p-6 rounded-md w-full flex flex-col lg:flex-row gap-8 lg:gap-0 group cursor-pointer">
       {/* TITLE & TAGS */}
       <Link href={`careers/${job.id}`} className="w-full h-full">
         <div className="space-y-4 w-5/6 h-full">
           <h3 className="text-2xl font-semibold group-hover:underline">
             {job.title}
           </h3>
-          <div className="flex flex-nowrap gap-3">
+          <div className="flex flex-wrap lg:flex-nowrap gap-3">
             <Badge className="gap-2">
               <span>
                 <Clock9 />
@@ -183,7 +183,7 @@ const JobCard = ({ job }: { job: JobCardType }) => {
       </Link>
 
       {/* CTA GROUP */}
-      <div className="flex flex-col gap-4 w-1/6">
+      <div className="flex flex-col gap-4 lg:w-1/6">
         <Link href={`careers/${job.id}`}>
           <Button variant={"constructive"} className="w-full">
             Apply Now
@@ -369,14 +369,11 @@ const CareerPage = () => {
 
   // Render
   return (
-    <div className="pb-10">
+    <div className="lg:pb-10">
       {/* HEADER */}
       <div className="flex items-center justify-around w-full sticky top-0 bg-background z-10 py-2">
-        <div className="size-12 bg-pink-500 rounded-xl grid text-center items-center">
-          LOGO
-        </div>
+        <Button>Company Link / Logo</Button>
         <div className="flex gap-4 items-center lg:gap-14">
-          <Button>Company Site</Button>
           <LinkedinIcon></LinkedinIcon>
           <FacebookIcon></FacebookIcon>
           <TwitterIcon></TwitterIcon>
@@ -385,7 +382,7 @@ const CareerPage = () => {
 
       <div className="lg:pb-24">
         {/* HERO BANNER */}
-        <div className="flex flex-col bg-gradient-to-tr from-secondary to-primary py-14 lg:py-0 lg:h-[45dvh] lg:items-center lg:justify-center">
+        <div className="flex flex-col bg-gradient-to-tr from-secondary to-primary py-14 lg:py-0 lg:h-[45dvh] lg:items-center lg:justify-center p-4 lg:p-0">
           <div className="grid place-items-center gap-6">
             <h1 className="text-4xl font-semibold text-center lg:text-5xl">
               Find your next career opportunity
@@ -393,7 +390,7 @@ const CareerPage = () => {
             <p className="text-xl text-center">
               Explore our open positions and join our growing team.
             </p>
-            <div className="w-4/5 lg:w-full h-fit relative">
+            <div className="w-3/4 lg:w-full h-fit relative">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
